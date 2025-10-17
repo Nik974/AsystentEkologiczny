@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_Produkty">
+
+    <fragment
+        android:id="@+id/navigation_Produkty"
+        android:name="com.example.myapplication.ui.Produkty.ProductsFragment"
+        android:label="@string/title_Produkty"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_Kaucja"
+        android:name="com.example.myapplication.ui.Kaucja.DashboardFragment"
+        android:label="@string/title_Kaucja"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_Raporty"
+        android:name="com.example.myapplication.ui.Raporty.ReportsFragment"
+        android:label="@string/title_Raporty"
+        tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/navigation_Ustawienia"
+        android:name="com.example.myapplication.ui.Ustawienia.SettingsFragment"
+        android:label="Ustawienia"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/navigation_AddProduct"
+        android:name="com.example.myapplication.ui.Produkty.AddProductFragment"
+        android:label="Dodaj produkt"
+        tools:layout="@layout/fragment_add_product" />
+
+
+</navigation>
