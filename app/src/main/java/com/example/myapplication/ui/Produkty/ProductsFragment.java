@@ -16,7 +16,7 @@ import com.example.myapplication.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
 
-public class ProductsFragment extends Fragment {
+public class ProductsFragment extends Fragment implements ProductAdapter.OnProductDeleteListener {
 
     private FragmentHomeBinding binding;
     private ProductsViewModel productsViewModel;
@@ -31,7 +31,7 @@ public class ProductsFragment extends Fragment {
         View root = binding.getRoot();
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ProductAdapter(new ArrayList<>());
+        adapter = new ProductAdapter(new ArrayList<>(), this);
         binding.recyclerView.setAdapter(adapter);
 
         productsViewModel.getProducts().observe(getViewLifecycleOwner(), products -> {
@@ -56,5 +56,10 @@ public class ProductsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onProductDelete(Product product) {
+        productsViewModel.deleteProductAndRefresh(product.getId());
     }
 }

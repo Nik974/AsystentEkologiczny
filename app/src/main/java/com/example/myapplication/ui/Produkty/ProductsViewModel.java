@@ -25,4 +25,9 @@ public class ProductsViewModel extends AndroidViewModel {
     public void loadProducts() {
         products.setValue(dbHelper.getAllProducts());
     }
+
+    public void deleteProductAndRefresh(int productId) {
+        dbHelper.deleteProduct(productId);
+        loadProducts();
+    }
 }

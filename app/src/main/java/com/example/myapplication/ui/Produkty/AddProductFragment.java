@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.Produkty;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,6 +15,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
+
+import java.util.Calendar;
+import java.util.Locale;
 
 public class AddProductFragment extends Fragment {
 
@@ -41,9 +45,26 @@ public class AddProductFragment extends Fragment {
         editPurchaseDate = view.findViewById(R.id.editPurchaseDate);
         btnSave = view.findViewById(R.id.btnSave);
 
+        editExpiryDate.setOnClickListener(v -> showDatePickerDialog(editExpiryDate));
+        editPurchaseDate.setOnClickListener(v -> showDatePickerDialog(editPurchaseDate));
+
         btnSave.setOnClickListener(v -> saveProduct());
 
         return view;
+    }
+
+    private void showDatePickerDialog(final EditText dateField) {
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                (view, year1, monthOfYear, dayOfMonth) -> {
+                    String selectedDate = String.format(Locale.getDefault(), "%d-%02d-%02d", year1, monthOfYear + 1, dayOfMonth);
+                    dateField.setText(selectedDate);
+                }, year, month, day);
+        datePickerDialog.show();
     }
 
     private void saveProduct() {

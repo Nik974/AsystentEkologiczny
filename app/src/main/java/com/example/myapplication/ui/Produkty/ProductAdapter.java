@@ -1,11 +1,13 @@
 package com.example.myapplication.ui.Produkty;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,9 +24,15 @@ import java.util.Locale;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private List<Product> productList;
+    private OnProductDeleteListener deleteListener;
 
-    public ProductAdapter(List<Product> productList) {
+    public interface OnProductDeleteListener {
+        void onProductDelete(Product product);
+    }
+
+    public ProductAdapter(List<Product> productList, OnProductDeleteListener deleteListener) {
         this.productList = productList;
+        this.deleteListener = deleteListener;
     }
 
     @NonNull
@@ -58,16 +66,36 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
 
         holder.itemView.setOnClickListener(v -> {
-            Context context = v.getContext();
-            Intent intent = new Intent(context, ProductDetailActivity.class);
-            intent.putExtra("name", currentProduct.getName());
-            intent.putExtra("price", currentProduct.getPrice());
-            intent.putExtra("category", currentProduct.getCategory());
-            intent.putExtra("expiryDate", currentProduct.getExpiryDate());
-            intent.putExtra("description", currentProduct.getDescription());
-            intent.putExtra("shop", currentProduct.getShop());
-            intent.putExtra("purchaseDate", currentProduct.getPurchaseDate());
-            context.startActivity(intent);
+            int adapterPosition = holder.getAdapterPosition();
+            if (adapterPosition != RecyclerView.NO_POSITION) {
+                Product product = productList.get(adapterPosition);
+                Context context = v.getContext();
+                Intent intent = new Intent(context, ProductDetailActivity.class);
+                intent.putExtra("name", product.getName());
+                intent.putExtra("price", product.getPrice());
+                intent.putExtra("category", product.getCategory());
+                intent.putExtra("expiryDate", product.getExpiryDate());
+                intent.putExtra("description", product.getDescription());
+                intent.putExtra("shop", product.getShop());
+                intent.putExtra("purchaseDate", product.getPurchaseDate());
+                context.startActivity(intent);
+            }
+        });
+
+        holder.deleteButton.setOnClickListener(v -> {
+            int adapterPosition = holder.getAdapterPosition();
+            if (adapterPosition != RecyclerView.NO_POSITION) {
+                new AlertDialog.Builder(v.getContext())
+                        .setTitle("Potwierdź usunięcie")
+                        .setMessage("Czy na pewno chcesz usunąć ten produkt?")
+                        .setPositiveButton("Tak", (dialog, which) -> {
+                            if (deleteListener != null) {
+                                deleteListener.onProductDelete(productList.get(adapterPosition));
+                            }
+                        })
+                        .setNegativeButton("Nie", null)
+                        .show();
+            }
         });
     }
 
@@ -86,6 +114,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         private final TextView price;
         private final TextView category;
         private final TextView expiryDate;
+        private final ImageButton deleteButton;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -93,6 +122,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             price = itemView.findViewById(R.id.product_price);
             category = itemView.findViewById(R.id.product_category);
             expiryDate = itemView.findViewById(R.id.product_expiry_date);
+            deleteButton = itemView.findViewById(R.id.delete_button);
         }
     }
 }

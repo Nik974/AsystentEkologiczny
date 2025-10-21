@@ -90,4 +90,10 @@ public class ProductDatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return productList;
     }
+
+    public void deleteProduct(int productId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_PRODUCTS, COLUMN_ID + " = ?", new String[]{String.valueOf(productId)});
+        db.close();
+    }
 }

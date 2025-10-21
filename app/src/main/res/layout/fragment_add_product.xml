@@ -31,7 +31,9 @@
             android:id="@+id/editExpiryDate"
             android:hint="Data ważności (YYYY-MM-DD)"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:clickable="true" />
 
         <EditText
             android:id="@+id/editCategory"
@@ -55,7 +57,9 @@
             android:id="@+id/editPurchaseDate"
             android:hint="Data zakupu (YYYY-MM-DD)"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:clickable="true" />
 
         <Button
             android:id="@+id/btnSave"
