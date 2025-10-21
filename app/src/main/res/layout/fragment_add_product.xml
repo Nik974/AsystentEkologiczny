@@ -22,7 +22,7 @@
 
         <EditText
             android:id="@+id/editPrice"
-            android:hint="Cena"
+            android:hint="Cena (zł)"
             android:inputType="numberDecimal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
