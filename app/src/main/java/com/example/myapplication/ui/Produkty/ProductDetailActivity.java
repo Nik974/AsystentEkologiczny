@@ -35,12 +35,12 @@ public class ProductDetailActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             name.setText(extras.getString("name"));
-            price.setText(String.format(Locale.getDefault(), "%.2f zł", extras.getDouble("price")));
-            category.setText(extras.getString("category"));
-            expiryDate.setText(extras.getString("expiryDate"));
-            description.setText(extras.getString("description"));
-            shop.setText(extras.getString("shop"));
-            purchaseDate.setText(extras.getString("purchaseDate"));
+            price.setText("Cena: " + String.format(Locale.getDefault(), "%.2f zł", extras.getDouble("price")));
+            category.setText("Kategoria: " + extras.getString("category"));
+            expiryDate.setText("Data ważności: " + extras.getString("expiryDate"));
+            description.setText("Opis: " + extras.getString("description"));
+            shop.setText("Sklep: " + extras.getString("shop"));
+            purchaseDate.setText("Data zakupu: " + extras.getString("purchaseDate"));
         }
     }
 
