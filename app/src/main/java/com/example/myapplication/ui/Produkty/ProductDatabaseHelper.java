@@ -3,8 +3,12 @@ package com.example.myapplication.ui.Produkty;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductDatabaseHelper extends SQLiteOpenHelper {
 
@@ -61,5 +65,29 @@ public class ProductDatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(TABLE_PRODUCTS, null, values);
         db.close();
         return result != -1;
+    }
+
+    public List<Product> getAllProducts() {
+        List<Product> productList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_PRODUCTS, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Product product = new Product();
+                product.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)));
+                product.setName(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME)));
+                product.setPrice(cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_PRICE)));
+                product.setExpiryDate(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_EXPIRY)));
+                product.setCategory(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CATEGORY)));
+                product.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION)));
+                product.setShop(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SHOP)));
+                product.setPurchaseDate(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PURCHASE_DATE)));
+                productList.add(product);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return productList;
     }
 }

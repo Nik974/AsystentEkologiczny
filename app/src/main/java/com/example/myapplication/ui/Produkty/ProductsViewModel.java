@@ -1,19 +1,28 @@
 package com.example.myapplication.ui.Produkty;
 
+import android.app.Application;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import java.util.List;
 
-public class ProductsViewModel extends ViewModel {
+public class ProductsViewModel extends AndroidViewModel {
 
-    private final MutableLiveData<String> mText;
+    private final ProductDatabaseHelper dbHelper;
+    private final MutableLiveData<List<Product>> products;
 
-    public ProductsViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("Dodaj Produkt");
+    public ProductsViewModel(Application application) {
+        super(application);
+        dbHelper = new ProductDatabaseHelper(application);
+        products = new MutableLiveData<>();
+        loadProducts();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<List<Product>> getProducts() {
+        return products;
+    }
+
+    public void loadProducts() {
+        products.setValue(dbHelper.getAllProducts());
     }
 }

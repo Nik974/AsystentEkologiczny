@@ -9,7 +9,11 @@
         android:id="@+id/navigation_Produkty"
         android:name="com.example.myapplication.ui.Produkty.ProductsFragment"
         android:label="@string/title_Produkty"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_nav_home_to_nav_add_product"
+            app:destination="@id/navigation_AddProduct" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_Kaucja"
