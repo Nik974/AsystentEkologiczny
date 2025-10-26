@@ -76,7 +76,7 @@ public class AddProductFragment extends Fragment {
         String shop = editShop.getText().toString().trim();
         String purchase = editPurchaseDate.getText().toString().trim();
 
-        // Валидация
+        //Validacja danych
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(priceText) ||
                 TextUtils.isEmpty(expiry) || TextUtils.isEmpty(category)) {
             Toast.makeText(getContext(), "Wypełnij wszystkie wymagane pola!", Toast.LENGTH_SHORT).show();

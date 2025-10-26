@@ -66,7 +66,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
 
         holder.itemView.setOnClickListener(v -> {
-            int adapterPosition = holder.getAdapterPosition();
+            int adapterPosition = holder.getBindingAdapterPosition();
             if (adapterPosition != RecyclerView.NO_POSITION) {
                 Product product = productList.get(adapterPosition);
                 Context context = v.getContext();
@@ -83,14 +83,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         });
 
         holder.deleteButton.setOnClickListener(v -> {
-            int adapterPosition = holder.getAdapterPosition();
+            int adapterPosition = holder.getBindingAdapterPosition();
             if (adapterPosition != RecyclerView.NO_POSITION) {
+                final Product productToDelete = productList.get(adapterPosition);
                 new AlertDialog.Builder(v.getContext())
                         .setTitle("Potwierdź usunięcie")
                         .setMessage("Czy na pewno chcesz usunąć ten produkt?")
                         .setPositiveButton("Tak", (dialog, which) -> {
                             if (deleteListener != null) {
-                                deleteListener.onProductDelete(productList.get(adapterPosition));
+                                deleteListener.onProductDelete(productToDelete);
                             }
                         })
                         .setNegativeButton("Nie", null)
