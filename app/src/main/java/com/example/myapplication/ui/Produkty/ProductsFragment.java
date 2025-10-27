@@ -16,6 +16,10 @@ import com.example.myapplication.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
 
+/**
+ * Fragment wyświetlający listę produktów.
+ * Umożliwia dodawanie nowych produktów i zarządzanie istniejącymi.
+ */
 public class ProductsFragment extends Fragment implements ProductAdapter.OnProductDeleteListener {
 
     private FragmentHomeBinding binding;
@@ -30,14 +34,17 @@ public class ProductsFragment extends Fragment implements ProductAdapter.OnProdu
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        // Inicjalizacja RecyclerView
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new ProductAdapter(new ArrayList<>(), this);
         binding.recyclerView.setAdapter(adapter);
 
+        // Obserwowanie zmian na liście produktów i aktualizacja adaptera
         productsViewModel.getProducts().observe(getViewLifecycleOwner(), products -> {
             adapter.setProducts(products);
         });
 
+        // Listener dla pływającego przycisku dodawania nowego produktu
         binding.fab.setOnClickListener(view -> {
             NavHostFragment.findNavController(ProductsFragment.this)
                     .navigate(R.id.action_nav_home_to_nav_add_product);
@@ -49,6 +56,7 @@ public class ProductsFragment extends Fragment implements ProductAdapter.OnProdu
     @Override
     public void onStart() {
         super.onStart();
+        // Odświeżenie listy produktów przy starcie fragmentu
         productsViewModel.loadProducts();
     }
 
@@ -57,6 +65,7 @@ public class ProductsFragment extends Fragment implements ProductAdapter.OnProdu
         super.onDestroyView();
         binding = null;
     }
+
 
     @Override
     public void onProductDelete(Product product) {

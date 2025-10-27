@@ -10,11 +10,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Klasa pomocnicza do zarządzania bazą danych SQLite dla produktów.
+ * Odpowiada za tworzenie, aktualizowanie i wykonywanie operacji CRUD na bazie danych.
+ */
 public class ProductDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "products.db";
     private static final int DATABASE_VERSION = 1;
 
+    // Nazwy tabeli i kolumn
     public static final String TABLE_PRODUCTS = "products";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
@@ -25,6 +30,10 @@ public class ProductDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_SHOP = "shop";
     public static final String COLUMN_PURCHASE_DATE = "purchase_date";
 
+    /**
+     * Konstruktor.
+     * @param context Kontekst aplikacji.
+     */
     public ProductDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -50,6 +59,11 @@ public class ProductDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Dodaje nowy produkt do bazy danych.
+     * @param product Obiekt produktu do dodania.
+     * @return true, jeśli produkt został dodany pomyślnie, w przeciwnym razie false.
+     */
     public boolean addProduct(Product product) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -67,6 +81,10 @@ public class ProductDatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    /**
+     * Zwraca listę wszystkich produktów z bazy danych.
+     * @return Lista obiektów Product.
+     */
     public List<Product> getAllProducts() {
         List<Product> productList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -91,6 +109,10 @@ public class ProductDatabaseHelper extends SQLiteOpenHelper {
         return productList;
     }
 
+    /**
+     * Usuwa produkt z bazy danych na podstawie jego ID.
+     * @param productId ID produktu do usunięcia.
+     */
     public void deleteProduct(int productId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_PRODUCTS, COLUMN_ID + " = ?", new String[]{String.valueOf(productId)});

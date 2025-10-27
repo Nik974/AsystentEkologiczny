@@ -12,6 +12,10 @@ import com.example.myapplication.R;
 
 import java.util.Locale;
 
+/**
+ * Aktywność wyświetlająca szczegółowe informacje o produkcie.
+ * Dane są przekazywane do tej aktywności za pomocą intencji.
+ */
 public class ProductDetailActivity extends AppCompatActivity {
 
     @Override
@@ -19,11 +23,13 @@ public class ProductDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
 
+        // Włączenie przycisku "wstecz" na pasku akcji
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        // Inicjalizacja pól TextView
         TextView name = findViewById(R.id.detail_name);
         TextView price = findViewById(R.id.detail_price);
         TextView category = findViewById(R.id.detail_category);
@@ -46,6 +52,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // Obsługa kliknięcia przycisku "wstecz"
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;

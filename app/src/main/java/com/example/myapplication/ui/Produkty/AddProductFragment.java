@@ -19,6 +19,10 @@ import com.example.myapplication.R;
 import java.util.Calendar;
 import java.util.Locale;
 
+/**
+ * Fragment odpowiedzialny za dodawanie nowego produktu do bazy danych.
+ * Umożliwia użytkownikowi wprowadzenie danych produktu i zapisanie go.
+ */
 public class AddProductFragment extends Fragment {
 
     private EditText editName, editPrice, editExpiryDate, editCategory,
@@ -36,6 +40,7 @@ public class AddProductFragment extends Fragment {
 
         dbHelper = new ProductDatabaseHelper(getContext());
 
+        // Inicjalizacja pól formularza
         editName = view.findViewById(R.id.editName);
         editPrice = view.findViewById(R.id.editPrice);
         editExpiryDate = view.findViewById(R.id.editExpiryDate);
@@ -45,14 +50,20 @@ public class AddProductFragment extends Fragment {
         editPurchaseDate = view.findViewById(R.id.editPurchaseDate);
         btnSave = view.findViewById(R.id.btnSave);
 
+        // Ustawienie listenerów dla pól daty, aby otwierać kalendarz
         editExpiryDate.setOnClickListener(v -> showDatePickerDialog(editExpiryDate));
         editPurchaseDate.setOnClickListener(v -> showDatePickerDialog(editPurchaseDate));
 
+        // Listener dla przycisku zapisu
         btnSave.setOnClickListener(v -> saveProduct());
 
         return view;
     }
 
+    /**
+     * Wyświetla okno dialogowe z kalendarzem do wyboru daty.
+     * @param dateField Pole EditText, które ma zostać zaktualizowane wybraną datą.
+     */
     private void showDatePickerDialog(final EditText dateField) {
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
@@ -67,6 +78,10 @@ public class AddProductFragment extends Fragment {
         datePickerDialog.show();
     }
 
+    /**
+     * Zapisuje nowy produkt do bazy danych.
+     * Przeprowadza walidację wprowadzonych danych przed zapisem.
+     */
     private void saveProduct() {
         String name = editName.getText().toString().trim();
         String priceText = editPrice.getText().toString().trim();
@@ -76,7 +91,7 @@ public class AddProductFragment extends Fragment {
         String shop = editShop.getText().toString().trim();
         String purchase = editPurchaseDate.getText().toString().trim();
 
-        //Validacja danych
+        // Walidacja, czy wymagane pola nie są puste
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(priceText) ||
                 TextUtils.isEmpty(expiry) || TextUtils.isEmpty(category)) {
             Toast.makeText(getContext(), "Wypełnij wszystkie wymagane pola!", Toast.LENGTH_SHORT).show();
@@ -103,6 +118,9 @@ public class AddProductFragment extends Fragment {
         }
     }
 
+    /**
+     * Czyści wszystkie pola formularza po pomyślnym zapisaniu produktu.
+     */
     private void clearFields() {
         editName.setText("");
         editPrice.setText("");

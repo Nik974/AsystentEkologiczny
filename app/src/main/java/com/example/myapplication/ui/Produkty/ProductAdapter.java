@@ -21,15 +21,27 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Adapter dla RecyclerView, który wyświetla listę produktów.
+ * Zarządza tworzeniem i wiązaniem widoków dla każdego elementu listy.
+ */
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private List<Product> productList;
     private OnProductDeleteListener deleteListener;
 
+    /**
+     * Interfejs do obsługi zdarzenia usunięcia produktu.
+     */
     public interface OnProductDeleteListener {
         void onProductDelete(Product product);
     }
 
+    /**
+     * Konstruktor adaptera.
+     * @param productList Lista produktów do wyświetlenia.
+     * @param deleteListener Listener do obsługi zdarzenia usunięcia.
+     */
     public ProductAdapter(List<Product> productList, OnProductDeleteListener deleteListener) {
         this.productList = productList;
         this.deleteListener = deleteListener;
@@ -51,12 +63,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.category.setText(currentProduct.getCategory());
         holder.expiryDate.setText(currentProduct.getExpiryDate());
 
-        // Highlight expired products
+        // Podświetlanie przeterminowanych produktów
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         try {
             Date expiry = sdf.parse(currentProduct.getExpiryDate());
             if (expiry != null && expiry.before(new Date())) {
-                holder.itemView.setBackgroundColor(Color.parseColor("#FFCDD2")); // Light pink/red
+                holder.itemView.setBackgroundColor(Color.parseColor("#FFCDD2")); // Jasnoróżowy/czerwony
             } else {
                 holder.itemView.setBackgroundColor(Color.TRANSPARENT);
             }
@@ -65,6 +77,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             holder.itemView.setBackgroundColor(Color.TRANSPARENT);
         }
 
+        // Listener do otwierania szczegółów produktu
         holder.itemView.setOnClickListener(v -> {
             int adapterPosition = holder.getBindingAdapterPosition();
             if (adapterPosition != RecyclerView.NO_POSITION) {
@@ -82,6 +95,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             }
         });
 
+        // Listener do usuwania produktu
         holder.deleteButton.setOnClickListener(v -> {
             int adapterPosition = holder.getBindingAdapterPosition();
             if (adapterPosition != RecyclerView.NO_POSITION) {
@@ -105,11 +119,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return productList.size();
     }
 
+    /**
+     * Ustawia nową listę produktów i odświeża widok.
+     * @param products Nowa lista produktów.
+     */
     public void setProducts(List<Product> products) {
         this.productList = products;
         notifyDataSetChanged();
     }
 
+    /**
+     * ViewHolder przechowujący widoki dla pojedynczego elementu listy.
+     */
     static class ProductViewHolder extends RecyclerView.ViewHolder {
         private final TextView name;
         private final TextView price;

@@ -1,17 +1,34 @@
 package com.example.myapplication.ui.Produkty;
 
+/**
+ * Klasa modelu reprezentująca pojedynczy produkt.
+ * Zawiera wszystkie informacje o produkcie, takie jak nazwa, cena, data ważności itp.
+ */
 public class Product {
-    private int id;
-    private String name;
-    private double price;
-    private String expiryDate;
-    private String category;
-    private String description;
-    private String shop;
-    private String purchaseDate;
+    private int id;                 // Unikalny identyfikator produktu w bazie danych
+    private String name;            // Nazwa produktu
+    private double price;           // Cena produktu
+    private String expiryDate;      // Data ważności produktu (w formacie YYYY-MM-DD)
+    private String category;        // Kategoria produktu
+    private String description;     // Opis produktu
+    private String shop;            // Sklep, w którym produkt został zakupiony
+    private String purchaseDate;    // Data zakupu produktu (w formacie YYYY-MM-DD)
 
+    /**
+     * Domyślny konstruktor.
+     */
     public Product() {}
 
+    /**
+     * Konstruktor do tworzenia nowego produktu z podanymi danymi.
+     * @param name Nazwa produktu
+     * @param price Cena produktu
+     * @param expiryDate Data ważności
+     * @param category Kategoria
+     * @param description Opis
+     * @param shop Sklep
+     * @param purchaseDate Data zakupu
+     */
     public Product(String name, double price, String expiryDate,
                    String category, String description, String shop, String purchaseDate) {
         this.name = name;
@@ -22,6 +39,8 @@ public class Product {
         this.shop = shop;
         this.purchaseDate = purchaseDate;
     }
+
+    // Gettery i Settery
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
