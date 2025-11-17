@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.myapplication.R;
 
@@ -23,10 +24,14 @@ public class ProductDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
 
+        Toolbar toolbar = findViewById(R.id.detail_toolbar);
+        setSupportActionBar(toolbar);
+
         // Włączenie przycisku "wstecz" na pasku akcji
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("Szczegóły produktu");
         }
 
         // Inicjalizacja pól TextView
@@ -38,6 +43,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         TextView shop = findViewById(R.id.detail_shop);
         TextView purchaseDate = findViewById(R.id.detail_purchase_date);
 
+        // Pobranie danych produktu z intencji i ustawienie ich w widokach
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             name.setText(extras.getString("name"));

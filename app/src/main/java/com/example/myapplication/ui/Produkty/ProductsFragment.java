@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Fragment wyświetlający listę produktów.
  * Umożliwia dodawanie nowych produktów i zarządzanie istniejącymi.
  */
-public class ProductsFragment extends Fragment implements ProductAdapter.OnProductDeleteListener {
+public class ProductsFragment extends Fragment implements ProductAdapter.OnProductDeleteListener, ProductAdapter.OnProductEditListener {
 
     private FragmentHomeBinding binding;
     private ProductsViewModel productsViewModel;
@@ -36,7 +36,7 @@ public class ProductsFragment extends Fragment implements ProductAdapter.OnProdu
 
         // Inicjalizacja RecyclerView
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ProductAdapter(new ArrayList<>(), this);
+        adapter = new ProductAdapter(new ArrayList<>(), this, this);
         binding.recyclerView.setAdapter(adapter);
 
         // Obserwowanie zmian na liście produktów i aktualizacja adaptera
@@ -44,7 +44,7 @@ public class ProductsFragment extends Fragment implements ProductAdapter.OnProdu
             adapter.setProducts(products);
         });
 
-        // Listener dla pływającego przycisku dodawania nowego produktu
+        // Listener dla pływającego przycisku akcji (FAB) do dodawania nowego produktu
         binding.fab.setOnClickListener(view -> {
             NavHostFragment.findNavController(ProductsFragment.this)
                     .navigate(R.id.action_nav_home_to_nav_add_product);
@@ -66,9 +66,32 @@ public class ProductsFragment extends Fragment implements ProductAdapter.OnProdu
         binding = null;
     }
 
-
+    /**
+     * Metoda wywoływana, gdy użytkownik potwierdzi usunięcie produktu.
+     * @param product Produkt do usunięcia.
+     */
     @Override
     public void onProductDelete(Product product) {
         productsViewModel.deleteProductAndRefresh(product.getId());
+    }
+
+    /**
+     * Metoda wywoływana, gdy użytkownik kliknie przycisk edycji produktu.
+     * @param product Produkt do edycji.
+     */
+    @Override
+    public void onProductEdit(Product product) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("productId", product.getId());
+        bundle.putString("productName", product.getName());
+        bundle.putDouble("productPrice", product.getPrice());
+        bundle.putString("productCategory", product.getCategory());
+        bundle.putString("productExpiryDate", product.getExpiryDate());
+        bundle.putString("productDescription", product.getDescription());
+        bundle.putString("productShop", product.getShop());
+        bundle.putString("productPurchaseDate", product.getPurchaseDate());
+
+        NavHostFragment.findNavController(ProductsFragment.this)
+                .navigate(R.id.action_nav_home_to_nav_add_product, bundle);
     }
 }

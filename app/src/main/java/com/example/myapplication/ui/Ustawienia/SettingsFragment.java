@@ -16,20 +16,20 @@ import com.example.myapplication.R;
 
 public class SettingsFragment extends Fragment {
 
-    private SwitchCompat switchNotifications; // ← наш выключатель
+    private SwitchCompat switchNotifications;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        // Подключаем layout
+
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        // Находим switch по ID
+
         switchNotifications = view.findViewById(R.id.switchNotifications);
 
-        // Обработчик нажатия
+
         switchNotifications.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 Toast.makeText(getContext(), "Powiadomienia włączone", Toast.LENGTH_SHORT).show();

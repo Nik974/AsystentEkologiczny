@@ -29,6 +29,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private List<Product> productList;
     private OnProductDeleteListener deleteListener;
+    private OnProductEditListener editListener;
 
     /**
      * Interfejs do obsługi zdarzenia usunięcia produktu.
@@ -38,13 +39,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     /**
+     * Interfejs do obsługi zdarzenia edycji produktu.
+     */
+    public interface OnProductEditListener {
+        void onProductEdit(Product product);
+    }
+
+    /**
      * Konstruktor adaptera.
      * @param productList Lista produktów do wyświetlenia.
      * @param deleteListener Listener do obsługi zdarzenia usunięcia.
+     * @param editListener Listener do obsługi zdarzenia edycji.
      */
-    public ProductAdapter(List<Product> productList, OnProductDeleteListener deleteListener) {
+    public ProductAdapter(List<Product> productList, OnProductDeleteListener deleteListener, OnProductEditListener editListener) {
         this.productList = productList;
         this.deleteListener = deleteListener;
+        this.editListener = editListener;
     }
 
     @NonNull
@@ -112,6 +122,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                         .show();
             }
         });
+
+        // Listener do edycji produktu
+        holder.editButton.setOnClickListener(v -> {
+            int adapterPosition = holder.getBindingAdapterPosition();
+            if (adapterPosition != RecyclerView.NO_POSITION) {
+                if (editListener != null) {
+                    editListener.onProductEdit(productList.get(adapterPosition));
+                }
+            }
+        });
     }
 
     @Override
@@ -137,6 +157,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         private final TextView category;
         private final TextView expiryDate;
         private final ImageButton deleteButton;
+        private final ImageButton editButton;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -145,6 +166,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             category = itemView.findViewById(R.id.product_category);
             expiryDate = itemView.findViewById(R.id.product_expiry_date);
             deleteButton = itemView.findViewById(R.id.delete_button);
+            editButton = itemView.findViewById(R.id.edit_button);
         }
     }
 }

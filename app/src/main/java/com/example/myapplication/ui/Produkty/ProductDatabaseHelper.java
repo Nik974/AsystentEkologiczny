@@ -82,6 +82,28 @@ public class ProductDatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * Aktualizuje istniejący produkt w bazie danych.
+     * @param product Obiekt produktu z zaktualizowanymi danymi.
+     * @return Ilość zaktualizowanych wierszy (powinno być 1, jeśli operacja się powiodła).
+     */
+    public int updateProduct(Product product) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, product.getName());
+        values.put(COLUMN_PRICE, product.getPrice());
+        values.put(COLUMN_EXPIRY, product.getExpiryDate());
+        values.put(COLUMN_CATEGORY, product.getCategory());
+        values.put(COLUMN_DESCRIPTION, product.getDescription());
+        values.put(COLUMN_SHOP, product.getShop());
+        values.put(COLUMN_PURCHASE_DATE, product.getPurchaseDate());
+
+        int rowsAffected = db.update(TABLE_PRODUCTS, values, COLUMN_ID + " = ?",
+                new String[]{String.valueOf(product.getId())});
+        db.close();
+        return rowsAffected;
+    }
+
+    /**
      * Zwraca listę wszystkich produktów z bazy danych.
      * @return Lista obiektów Product.
      */

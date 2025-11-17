@@ -51,4 +51,13 @@ public class ProductsViewModel extends AndroidViewModel {
         dbHelper.deleteProduct(productId);
         loadProducts();
     }
+
+    /**
+     * Aktualizuje produkt w bazie danych i odświeża listę.
+     * @param product Produkt do zaktualizowania.
+     */
+    public void updateProductAndRefresh(Product product) {
+        dbHelper.updateProduct(product);
+        loadProducts();
+    }
 }
