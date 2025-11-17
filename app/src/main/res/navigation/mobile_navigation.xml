@@ -19,7 +19,11 @@
         android:id="@+id/navigation_Kaucja"
         android:name="com.example.myapplication.ui.Kaucja.DashboardFragment"
         android:label="@string/title_Kaucja"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_navigation_Kaucja_to_addDepositFragment"
+            app:destination="@id/addDepositFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_Raporty"
@@ -37,5 +41,10 @@
         android:label="Dodaj produkt"
         tools:layout="@layout/fragment_add_product" />
 
+    <fragment
+        android:id="@+id/addDepositFragment"
+        android:name="com.example.myapplication.ui.Kaucja.AddDepositFragment"
+        android:label="Dodaj kaucję"
+        tools:layout="@layout/fragment_add_deposit" />
 
 </navigation>
