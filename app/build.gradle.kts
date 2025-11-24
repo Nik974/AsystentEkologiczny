@@ -45,6 +45,7 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.preference)
     implementation(libs.recyclerview)
+    implementation(libs.zxing.android.embedded)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

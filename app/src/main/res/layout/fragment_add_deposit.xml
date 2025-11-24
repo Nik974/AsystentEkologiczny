@@ -22,11 +22,26 @@
             android:hint="Wartość kaucji (zł)"
             android:inputType="numberDecimal" />
 
-        <EditText
-            android:id="@+id/editBarcode"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Kod kreskowy" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/editBarcode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Kod kreskowy" />
+
+            <Button
+                android:id="@+id/btnScanBarcode"
+                style="@style/Widget.AppCompat.Button.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Skanuj" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/btnSaveDeposit"
