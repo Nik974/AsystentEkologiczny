@@ -1,6 +1,5 @@
 package com.example.myapplication.ui.Produkty;
 
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,7 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Klasa pomocnicza do zarządzania bazą danych SQLite dla produktów.
@@ -19,7 +20,6 @@ public class ProductDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "products.db";
     private static final int DATABASE_VERSION = 1;
 
-    // Nazwy tabeli i kolumn
     public static final String TABLE_PRODUCTS = "products";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
@@ -30,10 +30,6 @@ public class ProductDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_SHOP = "shop";
     public static final String COLUMN_PURCHASE_DATE = "purchase_date";
 
-    /**
-     * Konstruktor.
-     * @param context Kontekst aplikacji.
-     */
     public ProductDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -59,15 +55,9 @@ public class ProductDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    /**
-     * Dodaje nowy produkt do bazy danych.
-     * @param product Obiekt produktu do dodania.
-     * @return true, jeśli produkt został dodany pomyślnie, w przeciwnym razie false.
-     */
     public boolean addProduct(Product product) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-
         values.put(COLUMN_NAME, product.getName());
         values.put(COLUMN_PRICE, product.getPrice());
         values.put(COLUMN_EXPIRY, product.getExpiryDate());
@@ -75,17 +65,11 @@ public class ProductDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DESCRIPTION, product.getDescription());
         values.put(COLUMN_SHOP, product.getShop());
         values.put(COLUMN_PURCHASE_DATE, product.getPurchaseDate());
-
         long result = db.insert(TABLE_PRODUCTS, null, values);
         db.close();
         return result != -1;
     }
 
-    /**
-     * Aktualizuje istniejący produkt w bazie danych.
-     * @param product Obiekt produktu z zaktualizowanymi danymi.
-     * @return Ilość zaktualizowanych wierszy (powinno być 1, jeśli operacja się powiodła).
-     */
     public int updateProduct(Product product) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -96,22 +80,16 @@ public class ProductDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DESCRIPTION, product.getDescription());
         values.put(COLUMN_SHOP, product.getShop());
         values.put(COLUMN_PURCHASE_DATE, product.getPurchaseDate());
-
         int rowsAffected = db.update(TABLE_PRODUCTS, values, COLUMN_ID + " = ?",
                 new String[]{String.valueOf(product.getId())});
         db.close();
         return rowsAffected;
     }
 
-    /**
-     * Zwraca listę wszystkich produktów z bazy danych.
-     * @return Lista obiektów Product.
-     */
     public List<Product> getAllProducts() {
         List<Product> productList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_PRODUCTS, null);
-
         if (cursor.moveToFirst()) {
             do {
                 Product product = new Product();
@@ -131,10 +109,30 @@ public class ProductDatabaseHelper extends SQLiteOpenHelper {
         return productList;
     }
 
-    /**
-     * Usuwa produkt z bazy danych na podstawie jego ID.
-     * @param productId ID produktu do usunięcia.
-     */
+    public double getExpensesForCurrentMonth() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        double totalExpenses = 0;
+
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+
+        String monthPattern = String.format(Locale.getDefault(), "%d-%02d-%%", year, month);
+
+        Cursor cursor = db.rawQuery(
+                "SELECT SUM(" + COLUMN_PRICE + ") FROM " + TABLE_PRODUCTS +
+                " WHERE " + COLUMN_PURCHASE_DATE + " LIKE ?",
+                new String[]{monthPattern}
+        );
+
+        if (cursor.moveToFirst()) {
+            totalExpenses = cursor.getDouble(0);
+        }
+        cursor.close();
+        db.close();
+        return totalExpenses;
+    }
+
     public void deleteProduct(int productId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_PRODUCTS, COLUMN_ID + " = ?", new String[]{String.valueOf(productId)});

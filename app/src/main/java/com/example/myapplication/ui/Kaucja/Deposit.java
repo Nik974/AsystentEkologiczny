@@ -9,6 +9,8 @@ public class Deposit {
     private String packagingType;   // Typ opakowania (np. butelka, puszka)
     private double depositValue;    // Wartość kaucji w złotówkach
     private String barcode;         // Kod kreskowy opakowania
+    private boolean isReturned;     // Czy opakowanie zostało zwrócone
+    private String returnDate;      // Data zwrotu opakowania (YYYY-MM-DD)
 
     /**
      * Domyślny konstruktor.
@@ -25,6 +27,8 @@ public class Deposit {
         this.packagingType = packagingType;
         this.depositValue = depositValue;
         this.barcode = barcode;
+        this.isReturned = false; // Domyślnie nowe opakowanie nie jest zwrócone
+        this.returnDate = null;
     }
 
     // Gettery i Settery
@@ -37,4 +41,8 @@ public class Deposit {
     public void setDepositValue(double depositValue) { this.depositValue = depositValue; }
     public String getBarcode() { return barcode; }
     public void setBarcode(String barcode) { this.barcode = barcode; }
+    public boolean isReturned() { return isReturned; }
+    public void setReturned(boolean returned) { isReturned = returned; }
+    public String getReturnDate() { return returnDate; }
+    public void setReturnDate(String returnDate) { this.returnDate = returnDate; }
 }

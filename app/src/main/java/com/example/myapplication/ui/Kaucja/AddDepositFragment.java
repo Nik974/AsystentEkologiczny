@@ -83,7 +83,7 @@ public class AddDepositFragment extends Fragment {
         ScanOptions options = new ScanOptions();
         options.setDesiredBarcodeFormats(ScanOptions.ALL_CODE_TYPES);
         options.setPrompt("Skanuj kod kreskowy");
-        options.setCameraId(0);  // Use a specific camera of the device
+        options.setCameraId(0);
         options.setBeepEnabled(true);
         options.setBarcodeImageEnabled(true);
         barcodeLauncher.launch(options);

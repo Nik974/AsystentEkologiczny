@@ -39,9 +39,12 @@ public class DashboardFragment extends Fragment implements DepositAdapter.OnDepo
             adapter.setDeposits(deposits);
         });
 
-        final TextView totalValueTextView = binding.totalDepositValue;
         dashboardViewModel.getTotalDepositValue().observe(getViewLifecycleOwner(), totalValue -> {
-            totalValueTextView.setText(String.format(Locale.getDefault(), "Suma kaucji: %.2f zł", totalValue));
+            binding.totalDepositValue.setText(String.format(Locale.getDefault(), "Suma kaucji do odzyskania: %.2f zł", totalValue));
+        });
+
+        dashboardViewModel.getReturnedThisMonth().observe(getViewLifecycleOwner(), returnedValue -> {
+            binding.returnedThisMonthSummary.setText(String.format(Locale.getDefault(), "Odzyskano w tym miesiącu: %.2f zł", returnedValue));
         });
 
         return root;
@@ -82,6 +85,11 @@ public class DashboardFragment extends Fragment implements DepositAdapter.OnDepo
     @Override
     public void onDeleteDeposit(Deposit deposit) {
         dashboardViewModel.deleteDeposit(deposit.getId());
+    }
+
+    @Override
+    public void onReturnDeposit(Deposit deposit, boolean isReturned) {
+        dashboardViewModel.setDepositReturned(deposit, isReturned);
     }
 
     @Override

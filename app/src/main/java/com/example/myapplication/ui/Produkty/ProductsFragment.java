@@ -15,6 +15,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Fragment wyświetlający listę produktów.
@@ -44,6 +45,10 @@ public class ProductsFragment extends Fragment implements ProductAdapter.OnProdu
             adapter.setProducts(products);
         });
 
+        productsViewModel.getMonthlyExpenses().observe(getViewLifecycleOwner(), expenses -> {
+            binding.monthlyExpensesSummary.setText(String.format(Locale.getDefault(), "Wydatki w tym miesiącu: %.2f zł", expenses));
+        });
+
         // Listener dla pływającego przycisku akcji (FAB) do dodawania nowego produktu
         binding.fab.setOnClickListener(view -> {
             NavHostFragment.findNavController(ProductsFragment.this)
@@ -56,7 +61,7 @@ public class ProductsFragment extends Fragment implements ProductAdapter.OnProdu
     @Override
     public void onStart() {
         super.onStart();
-        // Odświeżenie listy produktów przy starcie fragmentu
+        // Odświeżenie listy produktów i wydatków przy starcie fragmentu
         productsViewModel.loadProducts();
     }
 

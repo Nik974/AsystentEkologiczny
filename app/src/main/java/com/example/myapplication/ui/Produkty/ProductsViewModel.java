@@ -15,6 +15,7 @@ public class ProductsViewModel extends AndroidViewModel {
 
     private final ProductDatabaseHelper dbHelper;
     private final MutableLiveData<List<Product>> products;
+    private final MutableLiveData<Double> monthlyExpenses = new MutableLiveData<>();
 
     /**
      * Konstruktor ViewModelu.
@@ -25,6 +26,7 @@ public class ProductsViewModel extends AndroidViewModel {
         dbHelper = new ProductDatabaseHelper(application);
         products = new MutableLiveData<>();
         loadProducts();
+        loadMonthlyExpenses();
     }
 
     /**
@@ -36,11 +38,20 @@ public class ProductsViewModel extends AndroidViewModel {
         return products;
     }
 
+    public LiveData<Double> getMonthlyExpenses() {
+        return monthlyExpenses;
+    }
+
     /**
      * Ładuje listę produktów z bazy danych i aktualizuje LiveData.
      */
     public void loadProducts() {
         products.setValue(dbHelper.getAllProducts());
+        loadMonthlyExpenses(); // Refresh expenses when products change
+    }
+
+    public void loadMonthlyExpenses() {
+        monthlyExpenses.setValue(dbHelper.getExpensesForCurrentMonth());
     }
 
     /**
