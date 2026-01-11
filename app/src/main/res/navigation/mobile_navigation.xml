@@ -29,7 +29,12 @@
         android:id="@+id/navigation_Raporty"
         android:name="com.example.myapplication.ui.Raporty.ReportsFragment"
         android:label="@string/title_Raporty"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_notifications">
+        <action
+            android:id="@+id/action_navigation_Raporty_to_chartFragment"
+            app:destination="@id/chartFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/navigation_Ustawienia"
         android:name="com.example.myapplication.ui.Ustawienia.SettingsFragment"
@@ -46,5 +51,10 @@
         android:name="com.example.myapplication.ui.Kaucja.AddDepositFragment"
         android:label="Dodaj kaucję"
         tools:layout="@layout/fragment_add_deposit" />
+
+    <fragment
+        android:id="@+id/chartFragment"
+        android:name="com.example.myapplication.ui.Raporty.ChartFragment"
+        android:label="Raport Wydatków i Kaucji" />
 
 </navigation>

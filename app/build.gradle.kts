@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.preference)
     implementation(libs.recyclerview)
     implementation(libs.zxing.android.embedded)
+    implementation(libs.mpandroidchart)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
